@@ -2,7 +2,7 @@
 
 * The documentation for the `clean_doc` argument of `build()` now fully
   describes the behavior for `TRUE`, `FALSE`, and `NULL`, including the
-  non-interactive case (#187).
+  non-interactive case (@jimhester, #187).
 
 * `needs_compile()` now ignores `.gcov` code coverage files.
 
