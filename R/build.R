@@ -200,9 +200,7 @@ build_setup <- function(
     stop("`path` must exist", call. = FALSE)
   }
   if (!is_dir(path)) {
-    if (!binary) {
-      stop("`binary` must be TRUE for package files", call. = FALSE)
-    }
+    if (!binary) stop("`binary` must be TRUE for package files", call. = FALSE)
     if (compile_attributes) {
       stop(
         "`compile_attributes` must be FALSE for package files",
@@ -271,9 +269,7 @@ build_setup_source <- function(
   bootstrap_file <- file.path(path, "bootstrap.R")
   run_bootstrap <- isTRUE(get_desc_config_flag(path, "bootstrap"))
   if (file.exists(bootstrap_file) && run_bootstrap) {
-    if (!quiet) {
-      message("Running bootstrap.R...")
-    }
+    if (!quiet) message("Running bootstrap.R...")
 
     callr::rscript(
       bootstrap_file,
