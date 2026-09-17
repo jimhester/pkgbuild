@@ -100,12 +100,14 @@
 #'   register routines with
 #'   `tools::package_native_routine_registration_skeleton()` before building
 #'   the package. It is ignored if package does not need compilation.
-#' @param clean_doc If `TRUE`, clean the files in `inst/doc` before building
-#'   the package. If `NULL` and the `Config/build/clean-inst-doc` entry is
-#'   present in `DESCRIPTION`, then that is used. Otherwise, if `NULL`,
-#'   and interactive, ask to remove the files prior to cleaning. In most
-#'   cases cleaning the files is the correct behavior to avoid stale
-#'   vignette outputs in the built package.
+#' @param clean_doc If `TRUE`, clean the existing documents by deleting the
+#'   entire `inst/doc` directory before building the package. If `FALSE`,
+#'   leave `inst/doc` untouched. If `NULL`
+#'   (the default), first the `Config/build/clean-inst-doc` entry in
+#'   `DESCRIPTION` is used if present, otherwise if the session is
+#'   interactive the user is prompted for what to do, if non-interactive
+#'   the directory is deleted. In most cases cleaning the files is the
+#'   correct behavior to avoid stale vignette outputs in the built package.
 #' @export
 #' @return a string giving the location (including file name) of the built
 #'  package
@@ -198,7 +200,9 @@ build_setup <- function(
     stop("`path` must exist", call. = FALSE)
   }
   if (!is_dir(path)) {
-    if (!binary) stop("`binary` must be TRUE for package files", call. = FALSE)
+    if (!binary) {
+      stop("`binary` must be TRUE for package files", call. = FALSE)
+    }
     if (compile_attributes) {
       stop(
         "`compile_attributes` must be FALSE for package files",
@@ -267,7 +271,9 @@ build_setup_source <- function(
   bootstrap_file <- file.path(path, "bootstrap.R")
   run_bootstrap <- isTRUE(get_desc_config_flag(path, "bootstrap"))
   if (file.exists(bootstrap_file) && run_bootstrap) {
-    if (!quiet) message("Running bootstrap.R...")
+    if (!quiet) {
+      message("Running bootstrap.R...")
+    }
 
     callr::rscript(
       bootstrap_file,
